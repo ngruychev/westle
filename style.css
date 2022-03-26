@@ -1,0 +1,31 @@
+html, body {
+  min-width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.try .try--fail {}
+.try__emoji .try__emoji--fail {}
+.try__value .try__value--fail {}
+.try .try--success {}
+.try__emoji .try__emoji--success {}
+.try__value .try__value--success {}
+.try .try--skip {}
+.try__emoji .try__emoji--skip {}
+.try__value .try__value--skip {}
+.player {}
+.player__button .player__button--playing {}
+.player__button .player__button--not_playing {}
+.player__button .player__button--buffering {}
+.game-done {}
+.game-done__quote--game-over {}
+.game-done__quote--game-won {}
+.game-done__last-try {}
+.game-done__share-btn {}
+.controls {}
+.controls__skip-btn {}
+.controls__skip-btn {}
+.controls__guess-input {}
+.controls__guess-btn {}

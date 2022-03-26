@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Westle</title>
+  <script src="./index.js" defer type="module"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <template id="try-component">
+      <span v-if="_try.type === TryType.FAIL" class="try try--fail">
+        <span class="try__emoji try__emoji--fail">❌</span>
+        <span class="try__value try__value--fail">{{ _try.value }}</span>
+      </span>
+      <span v-if="_try.type === TryType.SUCCESS" class="try try--success">
+        <span class="try__emoji try__emoji--success">✅</span>
+        <span class="try__value try__value--success">{{ _try.value }}</span>
+      </span>
+      <span v-if="_try.type === TryType.SKIP" class="try try--skip">
+        <span class="try__emoji try__emoji--skip">⏭</span>
+        <span class="try__value try__value--skip">( skipped )</span>
+      </span>
+  </template>
+
+  <template id="player-component" class="player">
+    <button v-if="playingStatus === PlayerState.PLAYING" class="player__button player__button--playing">
+      ⏸️
+    </button>
+    <button v-else-if="playingStatus === PlayerState.NOT_PLAYING" @click="play" class="player__button player__button--not_playing">
+      ▶
+    </button>
+    <button v-else class="player__button player__button--buffering">
+      ⌛ {{ playingStatus }}
+    </button>
+  </template>
+
+  <template id="game-done-component">
+    <div class="game-done">
+      <quote v-if="isGameOver" class="game-done__quote--game-over">
+        <pre>You're Lost In The World. You're down on your miiiiind.</pre>
+      </quote>
+      <quote v-else class="game-done__quote--game-won">
+        <pre>
+          Did you realize
+          That you were a champion
+          In their eyes?
+          (Yes, I did)
+        </pre>
+      </quote>
+      <div v-scope="TryComponent(tries[tries.length - 1])" class="game-done__last-try"></div>
+      <button @click="copyToClipboard" class="game-done__share-btn">
+        Share 🗣️⛷️
+      </button>
+    </div>
+  </template>
+
+  <template id="controls-component">
+    <div class="controls">
+      <button v-if="skipIncrement !== 0" @click="skip" class="controls__skip-btn">skip (+{{ skipIncrement }})</button>
+      <button class="controls__skip-btn" v-else @click="skip">skip</button>
+      <datalist id="song-datalist">
+        <option v-for="song in songs" :value="song.fqSongName">
+      </datalist>
+      <input type="text" class="controls__guess-input" list="song-datalist" v-model="guessTxt" :size="longestSongNameLen + 2">
+      <button class="controls__guess-btn" @click="guess">Guess</button>
+    </div>
+  </template>
+
+  <template id="tries-component">
+    Tries:
+    <ul>
+      <li v-for="_try in tries">
+        <div v-scope="TryComponent(_try)"></div>
+      </li>
+    </ul>
+  </template>
+
+  <template id="appMain">
+    <div v-scope="{ $template: '#tries-component' }" v-if="!isGameDone"></div>
+    <div v-if="isGameDone" v-scope="{ $template: '#game-done-component' }"></div>
+    <div v-scope="PlayerComponent({ yt: _yt, gameLogic: _gameLogic })"></div>
+    <div v-scope="ControlsComponent({ gameLogic: _gameLogic })" v-if="!isGameDone"></div>
+  </template>
+
+  <div v-scope="{ $template: '#appMain' }"></div>
+
+  <!-- boilerplate stuff -->
+  <div id="youtube-audio">
+    <div id="youtube-player"></div>
+  </div>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+    async function onYouTubeIframeAPIReady() {
+      console.debug("Youtube API is ready");
+      // wait for westleMainFn to not be undefined
+      while (typeof window.westleMainFn === "undefined") {
+        await sleep(100);
+      }
+      window.westleMainFn();
+    }
+  </script>
+</body>
+
+</html>
