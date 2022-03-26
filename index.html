@@ -26,14 +26,14 @@
       </span>
   </template>
 
-  <template id="player-component" class="player">
-    <button v-if="playingStatus === PlayerState.PLAYING" class="player__button player__button--playing">
+  <template id="player-component">
+    <button v-if="playingStatus === PlayerState.PLAYING" class="button player__button player__button--playing">
       ⏸️
     </button>
-    <button v-else-if="playingStatus === PlayerState.NOT_PLAYING" @click="play" class="player__button player__button--not_playing">
+    <button v-else-if="playingStatus === PlayerState.NOT_PLAYING" @click="play" class="button player__button player__button--not_playing">
       ▶
     </button>
-    <button v-else class="player__button player__button--buffering">
+    <button v-else class="button player__button player__button--buffering">
       ⌛ {{ playingStatus }}
     </button>
   </template>
@@ -52,22 +52,20 @@
         </pre>
       </quote>
       <div v-scope="TryComponent(tries[tries.length - 1])" class="game-done__last-try"></div>
-      <button @click="copyToClipboard" class="game-done__share-btn">
+      <button @click="copyToClipboard" class="button game-done__share-btn">
         Share 🗣️⛷️
       </button>
     </div>
   </template>
 
   <template id="controls-component">
-    <div class="controls">
-      <button v-if="skipIncrement !== 0" @click="skip" class="controls__skip-btn">skip (+{{ skipIncrement }})</button>
-      <button class="controls__skip-btn" v-else @click="skip">skip</button>
-      <datalist id="song-datalist">
-        <option v-for="song in songs" :value="song.fqSongName">
-      </datalist>
-      <input type="text" class="controls__guess-input" list="song-datalist" v-model="guessTxt" :size="longestSongNameLen + 2">
-      <button class="controls__guess-btn" @click="guess">Guess</button>
-    </div>
+    <button v-if="skipIncrement !== 0" @click="skip" class="button controls__skip-btn">skip (+{{ skipIncrement }})</button>
+    <button class="controls__skip-btn" v-else @click="skip">skip</button>
+    <datalist id="song-datalist">
+      <option v-for="song in songs" :value="song.fqSongName">
+    </datalist>
+    <input type="text" class="controls__guess-input" list="song-datalist" v-model="guessTxt" :size="longestSongNameLen + 2">
+    <button class="button controls__guess-btn" @click="guess">Guess</button>
   </template>
 
   <template id="tries-component">
@@ -80,13 +78,13 @@
   </template>
 
   <template id="appMain">
-    <div v-scope="{ $template: '#tries-component' }" v-if="!isGameDone"></div>
-    <div v-if="isGameDone" v-scope="{ $template: '#game-done-component' }"></div>
-    <div v-scope="PlayerComponent({ yt: _yt, gameLogic: _gameLogic })"></div>
-    <div v-scope="ControlsComponent({ gameLogic: _gameLogic })" v-if="!isGameDone"></div>
+    <div v-scope="{ $template: '#tries-component' }" v-if="!isGameDone" class="tries"></div>
+    <div v-if="isGameDone" v-scope="{ $template: '#game-done-component' }" class="game-done"></div>
+    <div v-scope="PlayerComponent({ yt: _yt, gameLogic: _gameLogic })" v-if="!isGameDone" class="player"></div>
+    <div v-scope="ControlsComponent({ gameLogic: _gameLogic })" v-if="!isGameDone" class="controls"></div>
   </template>
 
-  <div v-scope="{ $template: '#appMain' }"></div>
+  <div v-scope="{ $template: '#appMain' }" class="app-main"></div>
 
   <!-- boilerplate stuff -->
   <div id="youtube-audio">

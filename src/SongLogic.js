@@ -6,17 +6,18 @@ import sample from "https://cdn.skypack.dev/lodash.sample@^4.2.1";
 import tzOffset from "https://cdn.skypack.dev/tz-offset@^0.0.2";
 
 export class Song {
-  constructor(name, artist, videoId, album = undefined) {
+  constructor(name, artist, videoId, album = undefined, offsetMs = 0) {
     this.name = name;
     this.artist = artist;
     this.videoId = videoId;
     this.album = album;
+    this.offsetMs = offsetMs;
   }
 
   get fqSongName() {
     let n = `${this.artist} -  ${this.name}`;
     if (this.album) {
-      n += `( ${this.album} )`;
+      n += ` ( ${this.album} )`;
     }
     return n;
   }
@@ -29,6 +30,8 @@ export class SongLogic {
         "I Love It",
         "Kanye West & Lil Pump",
         "cwQgjq0mCdE",
+        undefined,
+        1000,
       ),
       new Song(
         "Lift Yourself",

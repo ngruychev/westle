@@ -16,17 +16,21 @@ export class YtWrapper {
   playSignal = new Signal();
   pauseSignal = new Signal();
 
-  constructor(videoId) {
-    this.videoId = videoId;
-    this.initYtPlayer(videoId);
+  constructor(song) {
+    this.song = song;
+    this.initYtPlayer(song);
   }
 
-  initYtPlayer(videoId) {
+  initYtPlayer({ videoId, offsetMs }) {
     this.player = new window.YT.Player("youtube-player", {
       height: "0",
       width: "0",
       videoId,
-      playerVars: { autoplay: "0", loop: "0" },
+      playerVars: {
+        autoplay: 0,
+        loop: 0,
+        start: offsetMs / 1000,
+      },
       events: {
         onReady: () => {
           this.readyCompleter.complete();
@@ -51,10 +55,11 @@ export class YtWrapper {
   }
 
   play() {
+    const playerState = this.player.getPlayerState();
     if (
-      this.player.getPlayerState() === window.YT.PlayerState.PAUSED ||
-      this.player.getPlayerState() === window.YT.PlayerState.BUFFERING ||
-      this.player.getPlayerState() === window.YT.PlayerState.CUED
+      playerState === window.YT.PlayerState.PAUSED ||
+      playerState === window.YT.PlayerState.BUFFERING ||
+      playerState === window.YT.PlayerState.CUED
     ) {
       this.player.playVideo();
       this.playingStatus = PlayerState.PLAYING;
@@ -62,25 +67,22 @@ export class YtWrapper {
   }
 
   pause() {
-    if (this.playingStatus) {
-      this.player.pauseVideo();
-      this.playingStatus = PlayerState.NOT_PLAYING;
-    }
+    const playerState = this.player.getPlayerState();
     if (
-      this.player.getPlayerState() === window.YT.PlayerState.PLAYING ||
-      this.player.getPlayerState() === window.YT.PlayerState.BUFFERING
+      playerState === window.YT.PlayerState.PLAYING ||
+      playerState === window.YT.PlayerState.BUFFERING
     ) {
       this.player.pauseVideo();
       this.playingStatus = PlayerState.NOT_PLAYING;
     }
   }
 
-  async playFor(millis) {
+  async playFor(ms) {
     const startTime = this.player.getCurrentTime();
     this.play();
     await this.playSignal.wait();
-    const sleepPromise = sleep(millis);
-    while ((this.player.getCurrentTime() - startTime) <= (millis / 1000)) {
+    const sleepPromise = sleep(ms);
+    while ((this.player.getCurrentTime() - startTime) <= (ms / 1000)) {
       await sleep(100);
     }
     await sleepPromise;
@@ -92,7 +94,7 @@ export class YtWrapper {
   }
 
   seekToStart() {
-    this.player.seekTo(0);
+    this.player.seekTo(this.song.offsetMs / 1000);
   }
 
   async seekToStartAndPlay() {
@@ -101,9 +103,9 @@ export class YtWrapper {
     this.play();
   }
 
-  async seekToStartAndPlayFor(millis) {
+  async seekToStartAndPlayFor(ms) {
     this.seekToStart();
     await sleep(100);
-    await this.playFor(millis);
+    await this.playFor(ms);
   }
 }

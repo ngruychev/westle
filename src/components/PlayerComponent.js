@@ -27,5 +27,5 @@ export function PlayerComponent({ yt, gameLogic }) {
     get playingStatusText() {
       return PlayerState[this._yt.playingStatus];
     },
-  }
+  };
 }

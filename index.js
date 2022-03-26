@@ -15,7 +15,7 @@ async function main() {
 
   const gameLogic = new GameLogic(song.fqSongName, 6);
 
-  const yt = new YtWrapper(song.videoId);
+  const yt = new YtWrapper(song);
   window.westleYtWrapperInstance = yt;
 
   await yt.readyCompleter.promise;

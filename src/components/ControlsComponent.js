@@ -31,5 +31,5 @@ export function ControlsComponent({ gameLogic }) {
     get skipIncrement() {
       return triesToSkipIncrements[this.tryCount];
     },
-  }
+  };
 }
