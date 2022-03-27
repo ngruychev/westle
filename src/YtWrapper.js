@@ -80,12 +80,9 @@ export class YtWrapper {
   async playFor(ms) {
     const startTime = this.player.getCurrentTime();
     this.play();
-    await this.playSignal.wait();
-    const sleepPromise = sleep(ms);
     while ((this.player.getCurrentTime() - startTime) <= (ms / 1000)) {
-      await sleep(100);
+      await sleep(50);
     }
-    await sleepPromise;
     this.pause();
   }
 

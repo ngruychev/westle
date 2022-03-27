@@ -39,23 +39,21 @@
   </template>
 
   <template id="game-done-component">
-    <div class="game-done">
       <quote v-if="isGameOver" class="game-done__quote--game-over">
         <pre>You're Lost In The World. You're down on your miiiiind.</pre>
       </quote>
       <quote v-else class="game-done__quote--game-won">
         <pre>
-          Did you realize
-          That you were a champion
-          In their eyes?
-          (Yes, I did)
+Did you realize
+That you were a champion
+In their eyes?
+(Yes, I did)
         </pre>
       </quote>
       <div v-scope="TryComponent(tries[tries.length - 1])" class="game-done__last-try"></div>
       <button @click="copyToClipboard" class="button game-done__share-btn">
         Share 🗣️⛷️
       </button>
-    </div>
   </template>
 
   <template id="controls-component">
@@ -69,11 +67,8 @@
   </template>
 
   <template id="tries-component">
-    Tries:
-    <ul>
-      <li v-for="_try in tries">
-        <div v-scope="TryComponent(_try)"></div>
-      </li>
+    <ul class="try-list">
+      <li v-for="_try in tries" v-scope="TryComponent(_try)" class="try-list__try"></li>
     </ul>
   </template>
 

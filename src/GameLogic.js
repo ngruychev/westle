@@ -106,13 +106,11 @@ export class GameLogic {
     for (let i = this.tries.length; i < this.maxTries; i++) {
       emojiBar.push(afterCorrectGuessEmoji);
     }
-    const emojiString = `
-#Westle #${gameDay}
+    const emojiString = `#Westle #${gameDay}
 
 ${gameEmoji}${emojiBar.join("")}
 
-https://westle.app (doesn't actually exist)
-    `;
+https://westle.app (doesn't actually exist)`;
     return emojiString;
   }
 }
