@@ -51,7 +51,6 @@ In their eyes?
         </pre>
       </quote>
       <div class="game-done__tomorrow-timer">
-        <!-- display the time from secondsUntilTomorrow in HH:MM:SS -->
         <h1>
           {{ Math.floor(secondsUntilTomorrow / 3600).toString().padStart(2, '0') }}
           :
@@ -61,7 +60,8 @@ In their eyes?
         </h1>
 
       </div>
-      <div v-scope="TryComponent(tries[tries.length - 1])" class="game-done__last-try"></div>
+      <div v-if="isGameOver" v-scope="TryComponent(new Try(TryType.FAIL, _song.fqSongName))" class="game-done__answer game-done__answer--fail"></div>
+      <div v-else-if="isGameWon" v-scope="TryComponent(new Try(TryType.SUCCESS, _song.fqSongName))" class="game-done__answer game-done__answer--success"></div>
       <button @click="copyToClipboard" class="button game-done__share-btn">
         Share 🗣️⛷️
       </button>
@@ -73,7 +73,7 @@ In their eyes?
     <datalist id="song-datalist">
       <option v-for="song in songs" :value="song.fqSongName">
     </datalist>
-    <input type="text" class="controls__guess-input" list="song-datalist" v-model="guessTxt" :size="longestSongNameLen + 2">
+    <input type="text" class="controls__guess-input" list="song-datalist" v-model="guessTxt">
     <button class="button controls__guess-btn" @click="guess">Guess</button>
   </template>
 

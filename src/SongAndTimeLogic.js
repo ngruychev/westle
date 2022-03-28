@@ -1,7 +1,9 @@
 import sample from "https://cdn.skypack.dev/lodash.sample@^4.2.1";
+import shuffleSeed from "https://cdn.skypack.dev/shuffle-seed@^1.1.6";
 import dateFnsTz from "https://cdn.skypack.dev/date-fns-tz@^1.3.1";
 import * as dateFns from "https://cdn.skypack.dev/date-fns@^2.28.0";
 import config from "../config.json" assert { type: "json" };
+import songs from "../songs.json" assert { type: "json" };
 
 export class Song {
   constructor(name, artist, videoId, album = undefined, offsetMs = 0) {
@@ -22,27 +24,19 @@ export class Song {
 }
 
 export class SongAndTimeLogic {
+  songs = [];
   constructor(tz = config.timezone) {
-    this.songs = [
-      new Song(
-        "I Love It",
-        "Kanye West & Lil Pump",
-        "cwQgjq0mCdE",
-        undefined,
-        1000,
-      ),
-      new Song(
-        "Lift Yourself",
-        "Kanye West",
-        "8fbyfDbi-MI",
-      ),
-      new Song(
-        "Skit #4",
-        "Kanye West",
-        "Y4r6lS04RpQ",
-        "Late Registration",
-      ),
-    ];
+    for (const song of songs.songs) {
+      this.songs.push(
+        new Song(
+          song.name,
+          song.artist,
+          song.videoId,
+          song.album ?? undefined,
+          song.offsetMs ?? 0,
+        ),
+      );
+    }
     this.tz = tz;
   }
 
@@ -51,9 +45,13 @@ export class SongAndTimeLogic {
       return this.getRandomSong();
     } else {
       const day = this.getGameDay();
-      const song = this.songs[day % this.songs.length];
+      const song =
+        shuffleSeed.shuffle(
+          this.songs,
+          config.seed ?? "kanye west",
+        )[day % this.songs.length];
+      return song;
     }
-    return song;
   }
 
   getRandomSong() {

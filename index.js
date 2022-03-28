@@ -1,11 +1,10 @@
 import { createApp } from "https://unpkg.com/petite-vue@0.4.1?module";
 import { PlayerState, YtWrapper } from "./src/YtWrapper.js";
 import { SongAndTimeLogic } from "./src/SongAndTimeLogic.js";
-import { GameLogic, TryType } from "./src/GameLogic.js";
+import { GameLogic, TryType, Try } from "./src/GameLogic.js";
 import { TryComponent } from "./src/components/TryComponent.js";
 import { PlayerComponent } from "./src/components/PlayerComponent.js";
 import { ControlsComponent } from "./src/components/ControlsComponent.js";
-import config from "./config.json" assert { type: "json" };
 
 async function main() {
   console.debug("westle starting");
@@ -28,9 +27,7 @@ async function main() {
     _gameLogic: gameLogic,
     _songAndTimeLogic: songAndTimeLogic,
     songs,
-    get longestSongNameLen() {
-      return Math.max(...songs.map((song) => song.fqSongName.length));
-    },
+    _song: song,
     //
     get tries() {
       return this._gameLogic.tries;
@@ -64,6 +61,7 @@ async function main() {
     //
     PlayerState,
     TryType,
+    Try,
     //
     _tickSpeed: 500,
     secondsUntilTomorrow: songAndTimeLogic.secondsUntilNextGameDay(),
