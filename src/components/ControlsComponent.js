@@ -13,6 +13,9 @@ export function ControlsComponent({ gameLogic }) {
     $template: "#controls-component",
     guessTxt: "",
     guess() {
+      // force update the guessTxt
+      // because petite-vue is brokey
+      this.guessTxt = document.getElementById("guess-input").value;
       this._gameLogic.guess(this.guessTxt);
       this.guessTxt = "";
     },

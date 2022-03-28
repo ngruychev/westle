@@ -73,7 +73,7 @@ In their eyes?
     <datalist id="song-datalist">
       <option v-for="song in songs" :value="song.fqSongName">
     </datalist>
-    <input type="text" class="controls__guess-input" list="song-datalist" v-model="guessTxt">
+    <input id="guess-input" type="text" class="controls__guess-input" list="song-datalist" v-model="guessTxt">
     <button class="button controls__guess-btn" @click="guess">Guess</button>
   </template>
 
