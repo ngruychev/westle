@@ -50,6 +50,17 @@ In their eyes?
 (Yes, I did)
         </pre>
       </quote>
+      <div class="game-done__tomorrow-timer">
+        <!-- display the time from secondsUntilTomorrow in HH:MM:SS -->
+        <h1>
+          {{ Math.floor(secondsUntilTomorrow / 3600).toString().padStart(2, '0') }}
+          :
+          {{ Math.floor((secondsUntilTomorrow % 3600) / 60).toString().padStart(2, '0') }}
+          :
+          {{ Math.floor(secondsUntilTomorrow % 60).toString().padStart(2, '0') }}
+        </h1>
+
+      </div>
       <div v-scope="TryComponent(tries[tries.length - 1])" class="game-done__last-try"></div>
       <button @click="copyToClipboard" class="button game-done__share-btn">
         Share 🗣️⛷️
@@ -79,7 +90,7 @@ In their eyes?
     <div v-scope="ControlsComponent({ gameLogic: _gameLogic })" v-if="!isGameDone" class="controls"></div>
   </template>
 
-  <div v-scope="{ $template: '#appMain' }" class="app-main"></div>
+  <div v-scope="{ $template: '#appMain' }" @vue:mounted="mounted" class="app-main"></div>
 
   <!-- boilerplate stuff -->
   <div id="youtube-audio">

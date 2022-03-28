@@ -78,7 +78,6 @@ export class GameLogic {
   }
 
   generateEmoji(gameDay = 0) {
-    // a black square
     const skipGuessEmoji = "⬛️";
     const wrongGuessEmoji = "🟥";
     const correctGuessEmoji = "🟩";

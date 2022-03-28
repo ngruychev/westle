@@ -1,17 +1,18 @@
 import { createApp } from "https://unpkg.com/petite-vue@0.4.1?module";
 import { PlayerState, YtWrapper } from "./src/YtWrapper.js";
-import { SongLogic } from "./src/SongLogic.js";
+import { SongAndTimeLogic } from "./src/SongAndTimeLogic.js";
 import { GameLogic, TryType } from "./src/GameLogic.js";
 import { TryComponent } from "./src/components/TryComponent.js";
 import { PlayerComponent } from "./src/components/PlayerComponent.js";
 import { ControlsComponent } from "./src/components/ControlsComponent.js";
+import config from "./config.json" assert { type: "json" };
 
 async function main() {
   console.debug("westle starting");
 
-  const songLogic = new SongLogic();
-  const song = songLogic.getRandomSong();
-  const songs = songLogic.getSongs();
+  const songAndTimeLogic = new SongAndTimeLogic();
+  const song = songAndTimeLogic.getRandomSong();
+  const songs = songAndTimeLogic.getSongs();
 
   const gameLogic = new GameLogic(song.fqSongName, 6);
 
@@ -25,6 +26,7 @@ async function main() {
     //
     _yt: yt,
     _gameLogic: gameLogic,
+    _songAndTimeLogic: songAndTimeLogic,
     songs,
     get longestSongNameLen() {
       return Math.max(...songs.map((song) => song.fqSongName.length));
@@ -44,7 +46,9 @@ async function main() {
     },
     //
     copyToClipboard() {
-      const emojiText = this._gameLogic.generateEmoji();
+      const emojiText = this._gameLogic.generateEmoji(
+        this._songAndTimeLogic.getGameDay(),
+      );
       const el = document.createElement("textarea");
       el.value = emojiText;
       document.body.appendChild(el);
@@ -60,6 +64,20 @@ async function main() {
     //
     PlayerState,
     TryType,
+    //
+    _tickSpeed: 500,
+    secondsUntilTomorrow: songAndTimeLogic.secondsUntilNextGameDay(),
+    mounted() {
+      setTimeout(this.tick, this._tickSpeed);
+    },
+    tick() {
+      this.secondsUntilTomorrow -= this._tickSpeed / 1000;
+      if (this.secondsUntilTomorrow > 0) {
+        setTimeout(this.tick, this._tickSpeed);
+      } else {
+        setTimeout(window.location.reload(), this._tickSpeed * 2);
+      }
+    },
   }).mount();
 }
 window.westleMainFn = main;
