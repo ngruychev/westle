@@ -12,18 +12,19 @@
 
 <body>
   <template id="try-component">
-      <span v-if="_try.type === TryType.FAIL" class="try try--fail">
+      <span v-if="_try?.type === TryType.FAIL" class="try try--fail">
         <span class="try__emoji try__emoji--fail">❌</span>
         <span class="try__value try__value--fail">{{ _try.value }}</span>
       </span>
-      <span v-if="_try.type === TryType.SUCCESS" class="try try--success">
+      <span v-if="_try?.type === TryType.SUCCESS" class="try try--success">
         <span class="try__emoji try__emoji--success">✅</span>
         <span class="try__value try__value--success">{{ _try.value }}</span>
       </span>
-      <span v-if="_try.type === TryType.SKIP" class="try try--skip">
+      <span v-if="_try?.type === TryType.SKIP" class="try try--skip">
         <span class="try__emoji try__emoji--skip">⏭</span>
         <span class="try__value try__value--skip">( skipped )</span>
       </span>
+      <span v-if="_try === null" class="try try--blank">&nbsp;</span>
   </template>
 
   <template id="player-component">
@@ -72,7 +73,7 @@ In their eyes?
     <button v-if="skipIncrement !== 0" @click="skip" class="button controls__skip-btn">skip (+{{ skipIncrement }})</button>
     <button class="controls__skip-btn" v-else @click="skip">skip</button>
     <datalist id="song-datalist">
-      <option v-for="song in songs" :value="song.fqSongName">
+      <option v-for="song in songs" :value="song.fqSongName" :key="song.fqSongName">
     </datalist>
     <input id="guess-input" type="text" class="controls__guess-input" list="song-datalist" v-model="guessTxt">
     <button class="button controls__guess-btn" @click="guess">Guess</button>
@@ -80,7 +81,8 @@ In their eyes?
 
   <template id="tries-component">
     <ul class="try-list">
-      <li v-for="_try in tries" v-scope="TryComponent(_try)" class="try-list__try"></li>
+      <li v-for="_try in tries" v-scope="TryComponent(_try)" class="try-list__try" :key="_try"></li>
+      <li v-for="_try in (maxTries - tries.length)" v-scope="TryComponent(null)" class="try-list__try"></li>
     </ul>
   </template>
 

@@ -5,6 +5,7 @@ import { GameLogic, TryType, Try } from "./src/GameLogic.js";
 import { TryComponent } from "./src/components/TryComponent.js";
 import { PlayerComponent } from "./src/components/PlayerComponent.js";
 import { ControlsComponent } from "./src/components/ControlsComponent.js";
+import config from "./config.json" assert { type: "json" };
 
 async function main() {
   console.debug("westle starting");
@@ -13,7 +14,7 @@ async function main() {
   const song = songAndTimeLogic.getRandomSong();
   const songs = songAndTimeLogic.getSongs();
 
-  const gameLogic = new GameLogic(song.fqSongName, 6);
+  const gameLogic = new GameLogic(song.fqSongName, config.maxTries);
 
   const yt = new YtWrapper(song);
   window.westleYtWrapperInstance = yt;
@@ -27,6 +28,7 @@ async function main() {
     _gameLogic: gameLogic,
     _songAndTimeLogic: songAndTimeLogic,
     songs,
+    maxTries: config.maxTries,
     _song: song,
     //
     get tries() {
