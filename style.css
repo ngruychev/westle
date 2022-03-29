@@ -32,7 +32,10 @@ html, body {
 }
 
 .player__button {
-  border-radius: 50px;
+  border-radius: 50%;
+  width: 3em;
+  height: 3em;
+  padding: 0;
 }
 
 .controls__guess-input {

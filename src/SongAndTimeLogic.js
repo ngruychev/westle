@@ -17,7 +17,7 @@ export class Song {
   get fqSongName() {
     let n = `${this.artist} -  ${this.name}`;
     if (this.album) {
-      n += ` ( ${this.album} )`;
+      n += ` (${this.album})`;
     }
     return n;
   }
