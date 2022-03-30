@@ -78,6 +78,6 @@ async function main() {
         setTimeout(window.location.reload(), this._tickSpeed * 2);
       }
     },
-  }).mount();
+  }).mount("#main");
 }
 window.westleMainFn = main;

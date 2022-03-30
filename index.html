@@ -86,14 +86,14 @@ In their eyes?
     </ul>
   </template>
 
-  <template id="appMain">
+  <template id="main-component">
     <div v-scope="{ $template: '#tries-component' }" v-if="!isGameDone" class="tries"></div>
     <div v-if="isGameDone" v-scope="{ $template: '#game-done-component' }" class="game-done"></div>
     <div v-scope="PlayerComponent({ yt: _yt, gameLogic: _gameLogic })" v-if="!isGameDone" class="player"></div>
     <div v-scope="ControlsComponent({ gameLogic: _gameLogic })" v-if="!isGameDone" class="controls"></div>
   </template>
 
-  <div v-scope="{ $template: '#appMain' }" @vue:mounted="mounted" class="app-main"></div>
+  <main id="main" v-scope="{ $template: '#main-component' }" @vue:mounted="mounted" class="app-main"></main>
 
   <!-- boilerplate stuff -->
   <div id="youtube-audio">
