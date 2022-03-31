@@ -1,7 +1,8 @@
 import sample from "https://cdn.skypack.dev/lodash.sample@^4.2.1";
-import shuffleSeed from "https://cdn.skypack.dev/shuffle-seed@^1.1.6";
+import { shuffle } from "https://cdn.skypack.dev/seed-shuffle@^1.0.0";
 import dateFnsTz from "https://cdn.skypack.dev/date-fns-tz@^1.3.1";
 import * as dateFns from "https://cdn.skypack.dev/date-fns@^2.28.0";
+import { cybr53 } from "./utils/cybr53.js";
 import config from "../config.json" assert { type: "json" };
 import songs from "../songs.json" assert { type: "json" };
 
@@ -45,9 +46,9 @@ export class SongAndTimeLogic {
       return this.getRandomSong();
     } else {
       const day = this.getGameDay();
-      const song = shuffleSeed.shuffle(
+      const song = shuffle(
         this.songs,
-        config.seed ?? "kanye west",
+        cybr53(config.seed ?? "kanye west"),
       )[day % this.songs.length];
       return song;
     }

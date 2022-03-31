@@ -11,7 +11,7 @@ async function main() {
   console.debug("westle starting");
 
   const songAndTimeLogic = new SongAndTimeLogic();
-  const song = songAndTimeLogic.getRandomSong();
+  const song = songAndTimeLogic.getTodaySong();
   const songs = songAndTimeLogic.getSongs();
   const gameDay = songAndTimeLogic.getGameDay();
 
