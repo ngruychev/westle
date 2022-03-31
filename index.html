@@ -65,7 +65,8 @@ In their eyes?
       <div v-if="isGameOver" v-scope="TryComponent(new Try(TryType.FAIL, _song.fqSongName))" class="game-done__answer game-done__answer--fail"></div>
       <div v-else-if="isGameWon" v-scope="TryComponent(new Try(TryType.SUCCESS, _song.fqSongName))" class="game-done__answer game-done__answer--success"></div>
       <button @click="copyToClipboard" class="button game-done__share-btn">
-        Share 🗣️⛷️
+        <template v-if="copied">Copied!</template>
+        <template v-else>Share 🗣️⛷️</template>
       </button>
   </template>
 

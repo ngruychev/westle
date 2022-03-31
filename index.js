@@ -46,6 +46,7 @@ async function main() {
       return this.isGameOver || this.isGameWon;
     },
     //
+    copied: false,
     copyToClipboard() {
       const emojiText = this._gameLogic.generateEmoji(
         this.gameDay,
@@ -56,7 +57,10 @@ async function main() {
       el.select();
       document.execCommand("copy");
       document.body.removeChild(el);
-      window.alert(`Copied to clipboard!`);
+      this.copied = true;
+      setTimeout(() => {
+        this.copied = false;
+      }, 1500);
     },
     //
     TryComponent,
