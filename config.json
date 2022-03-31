@@ -6,5 +6,6 @@
   },
   "timezone": "America/Los_Angeles",
   "randomSong": true,
-  "maxTries": 6
+  "maxTries": 6,
+  "persistToLocalStorage": true
 }

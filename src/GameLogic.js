@@ -1,11 +1,5 @@
 import { fuzzy } from "./utils/fuzzy.js";
 
-// enum TryType
-// {
-//    Skip,
-//    Fail,
-//    Success
-// }
 const TryType = {};
 TryType[TryType.SKIP = 0] = "SKIP";
 TryType[TryType.FAIL = 1] = "FAIL";
@@ -23,13 +17,90 @@ export class Try {
 }
 
 export class GameLogic {
-  constructor(songName, maxTries) {
-    this.songName = songName;
+  constructor(songName, maxTries, gameDay) {
+    this.gameDay = gameDay;
     this.maxTries = maxTries;
-    this.maxedOut = false;
-    this.guessed = false;
-    this.tries = [];
-    this.skipCount = 0;
+    this.songName = songName;
+    if (!this.load()) {
+      this.maxedOut = false;
+      this.guessed = false;
+      this.tries = [];
+      this.skipCount = 0;
+    }
+  }
+
+  save() {
+    localStorage.setItem(
+      `westle-game-${this.gameDay}`,
+      JSON.stringify({
+        songName: this.songName,
+        maxTries: this.maxTries,
+        gameDay: this.gameDay,
+        maxedOut: this.maxedOut,
+        guessed: this.guessed,
+        tries: this.tries,
+        skipCount: this.skipCount,
+      }),
+    );
+  }
+
+  load() {
+    const saved = localStorage.getItem(`westle-game-${this.gameDay}`);
+    if (saved) {
+      const {
+        maxedOut,
+        guessed,
+        tries,
+        skipCount,
+      } = JSON.parse(saved);
+      this.maxedOut = maxedOut;
+      this.guessed = guessed;
+      this.tries = tries;
+      this.skipCount = skipCount;
+      return true;
+    }
+    return false;
+  }
+
+  get stats() {
+    const stats = {
+      played: 0,
+      won: 0,
+      winRate: 0,
+      currentStreak: 0,
+      maxStreak: 0,
+      winHistogram: {
+        fail: 0,
+        other: [],
+      },
+    };
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.startsWith("westle-game-")) {
+        const game = JSON.parse(localStorage.getItem(key));
+        if (!(game.guessed || game.maxedOut)) {
+          continue;
+        }
+        stats.played++;
+        if (game.guessed) {
+          stats.won++;
+          stats.currentStreak++;
+          if (stats.currentStreak > stats.maxStreak) {
+            stats.maxStreak = stats.currentStreak;
+          }
+          if (game.tries.length !== 0) {
+            const idx = game.tries.length - 1;
+            stats.winHistogram.other[idx] ??= 0;
+            stats.winHistogram.other[idx]++;
+          }
+        } else {
+          stats.currentStreak = 0;
+          stats.winHistogram.fail++;
+        }
+      }
+    }
+    stats.winRate = stats.won / stats.played;
+    return stats;
   }
 
   guess(songName) {
@@ -55,6 +126,7 @@ export class GameLogic {
     if (this.tries.length >= this.maxTries) {
       this.maxedOut = true;
     }
+    this.save();
   }
 
   skip() {
@@ -71,6 +143,7 @@ export class GameLogic {
     if (this.tries.length >= this.maxTries) {
       this.maxedOut = true;
     }
+    this.save();
   }
 
   get isGameOver() {
@@ -101,7 +174,7 @@ export class GameLogic {
           break;
       }
     }
-    // fill the rest of the bar until this.maxTries
+
     for (let i = this.tries.length; i < this.maxTries; i++) {
       emojiBar.push(afterCorrectGuessEmoji);
     }

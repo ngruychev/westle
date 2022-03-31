@@ -1,7 +1,7 @@
 import { createApp } from "https://unpkg.com/petite-vue@0.4.1?module";
 import { PlayerState, YtWrapper } from "./src/YtWrapper.js";
 import { SongAndTimeLogic } from "./src/SongAndTimeLogic.js";
-import { GameLogic, TryType, Try } from "./src/GameLogic.js";
+import { GameLogic, Try, TryType } from "./src/GameLogic.js";
 import { TryComponent } from "./src/components/TryComponent.js";
 import { PlayerComponent } from "./src/components/PlayerComponent.js";
 import { ControlsComponent } from "./src/components/ControlsComponent.js";
@@ -13,8 +13,9 @@ async function main() {
   const songAndTimeLogic = new SongAndTimeLogic();
   const song = songAndTimeLogic.getRandomSong();
   const songs = songAndTimeLogic.getSongs();
+  const gameDay = songAndTimeLogic.getGameDay();
 
-  const gameLogic = new GameLogic(song.fqSongName, config.maxTries);
+  const gameLogic = new GameLogic(song.fqSongName, config.maxTries, gameDay);
 
   const yt = new YtWrapper(song);
   window.westleYtWrapperInstance = yt;
@@ -29,6 +30,7 @@ async function main() {
     _songAndTimeLogic: songAndTimeLogic,
     songs,
     maxTries: config.maxTries,
+    gameDay,
     _song: song,
     //
     get tries() {
@@ -46,7 +48,7 @@ async function main() {
     //
     copyToClipboard() {
       const emojiText = this._gameLogic.generateEmoji(
-        this._songAndTimeLogic.getGameDay(),
+        this.gameDay,
       );
       const el = document.createElement("textarea");
       el.value = emojiText;

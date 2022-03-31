@@ -45,11 +45,10 @@ export class SongAndTimeLogic {
       return this.getRandomSong();
     } else {
       const day = this.getGameDay();
-      const song =
-        shuffleSeed.shuffle(
-          this.songs,
-          config.seed ?? "kanye west",
-        )[day % this.songs.length];
+      const song = shuffleSeed.shuffle(
+        this.songs,
+        config.seed ?? "kanye west",
+      )[day % this.songs.length];
       return song;
     }
   }
