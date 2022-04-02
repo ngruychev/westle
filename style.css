@@ -60,6 +60,30 @@ html, body {
   flex: 1;
 }
 
+@keyframes loading-dots {
+  0% {
+    content: "Loading\00a0\00a0\00a0";
+  }
+  33% {
+    content: "Loading.\00a0\00a0";
+  }
+  66% {
+    content: "Loading..\00a0";
+  }
+  100% {
+    content: "Loading...";
+  }
+}
+
+
+#appRoot:empty::before {
+  content: "";
+  animation: loading-dots 1.5s linear infinite;
+  font-size: 2em;
+  color: var(--westle-color-secondary-gray);
+  margin: auto;
+}
+
 .app-body {
   width: 100%;
   height: 100%;
