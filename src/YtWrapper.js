@@ -1,5 +1,4 @@
 import { Completer } from "./utils/Completer.js";
-import { Signal } from "./utils/Signal.js";
 import { sleep } from "./utils/sleep.js";
 
 const PlayerState = {};
@@ -13,8 +12,6 @@ export class YtWrapper {
   player;
   playingStatus = PlayerState.NOT_PLAYING;
   readyCompleter = new Completer();
-  playSignal = new Signal();
-  pauseSignal = new Signal();
 
   constructor(song) {
     this.song = song;
@@ -41,11 +38,6 @@ export class YtWrapper {
               : PlayerState.NOT_PLAYING;
         },
         onStateChange: (e) => {
-          if (e.data === window.YT.PlayerState.PLAYING) {
-            this.playSignal.send();
-          } else if (e.data === window.YT.PlayerState.PAUSED) {
-            this.pauseSignal.send();
-          }
           if (e.data === window.YT.PlayerState.ENDED) {
             this.playingStatus = PlayerState.NOT_PLAYING;
           }
