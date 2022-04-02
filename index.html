@@ -71,8 +71,8 @@ In their eyes?
   </template>
 
   <template id="controls-component">
-    <button v-if="skipIncrement !== 0" @click="skip" class="button controls__skip-btn">skip (+{{ skipIncrement }})</button>
-    <button class="controls__skip-btn" v-else @click="skip">skip</button>
+    <button v-if="skipIncrement !== 0" @click="skip" class="button controls__skip-btn">skip &nbsp;(+{{ skipIncrement }})</button>
+    <button class="button controls__skip-btn" v-else @click="skip">&nbsp;&nbsp;&nbsp;skip&nbsp;&nbsp;&nbsp;</button>
     <datalist id="song-datalist">
       <option v-for="song in songs" :value="song.fqSongName" :key="song.fqSongName">
     </datalist>
@@ -97,21 +97,15 @@ In their eyes?
   
   <template id="app-root-component">
     <header class="header">
-      <details class="details-modal">
-        <summary class="details-modal__summary">
-          ❓
-        </summary>
-        <div class="details-modal__outer">
-          <div class="details-modal__inner">
-            <header class="details-modal__header">
-              <h1 class="details-modal__title">How to play</h1>
-              <button
-                class="button details-modal__close-btn"
-                onclick="this.parentElement.parentElement.parentElement.parentElement.open = false">
-                ×
-              </button>
+      <div class="modal" v-scope="{ modalOpen: false }">
+        <span class="modal__activator" @click="modalOpen = true">❓</span>
+        <div class="modal__outer" v-if="modalOpen" @click="modalOpen = false">
+          <div class="modal__inner" @click.stop="">
+            <header class="modal__header">
+              <h1 class="modal__title">How to play</h1>
+              <button class="button modal__close-btn" @click="modalOpen = false">×</button>
             </header>
-            <main class="details-modal__main">
+            <main class="modal__main">
               <ol class="help-modal__ol">
                 <li class="help-modal__li">Listen to the intro, then find the correct Ye song in the list.</li>
                 <li class="help-modal__li">Skipped or incorrect attempts unlock more of the intro</li>
@@ -120,23 +114,17 @@ In their eyes?
             </main>
           </div>
         </div>
-      </details>
+      </div>
       <h1 class="header__title">Westle</h1>
-      <details class="details-modal">
-        <summary class="details-modal__summary">
-          📊
-        </summary>
-        <div class="details-modal__outer">
-          <div class="details-modal__inner">
-            <header class="details-modal__header">
-              <h1 class="details-modal__title">Stats</h1>
-              <button
-                class="button details-modal__close-btn"
-                onclick="this.parentElement.parentElement.parentElement.parentElement.open = false">
-                ×
-              </button>
+      <div class="modal" v-scope="{ modalOpen: false }">
+        <span class="modal__activator" @click="modalOpen = true">📊</span>
+        <div class="modal__outer" v-if="modalOpen" @click="modalOpen = false">
+          <div class="modal__inner" @click.stop="">
+            <header class="modal__header">
+              <h1 class="modal__title">Stats</h1>
+              <button class="button modal__close-btn" @click="modalOpen = false">×</button>
             </header>
-            <main class="details-modal__main" v-scope="{ stats: _gameLogic.stats }">
+            <main class="modal__main" v-scope="{ stats: _gameLogic.stats }">
               <h4>Statistics</h4>
               <dl class="stats-modal__dl">
                 <span class="stats-modal__dl-pair">
@@ -172,9 +160,7 @@ In their eyes?
             </main>
           </div>
         </div>
-      </details>
-      <a class="header__stats-a" for="stats-modal" href="#stats">
-      </a>
+      </div>
     </header>
     <main v-scope="{ $template: '#app-body-component' }" class="app-body"></main>
   </template>
