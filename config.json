@@ -1,11 +1,11 @@
 {
   "epoch": {
     "year": 2022,
-    "month": 3,
-    "day": 27
+    "month": 4,
+    "day": 2
   },
   "timezone": "America/Los_Angeles",
-  "randomSong": true,
+  "randomSong": false,
   "maxTries": 6,
   "persistToLocalStorage": true
 }

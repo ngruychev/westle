@@ -72,8 +72,10 @@ export class GameLogic {
       winHistogram: {
         fail: 0,
         other: [],
+        max: 0,
       },
     };
+    stats.winHistogram.other = Array.from({ length: this.maxTries }, () => 0);
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key.startsWith("westle-game-")) {
@@ -88,18 +90,25 @@ export class GameLogic {
           if (stats.currentStreak > stats.maxStreak) {
             stats.maxStreak = stats.currentStreak;
           }
+          stats.maxStreak = Math.max(stats.currentStreak, stats.maxStreak);
           if (game.tries.length !== 0) {
             const idx = game.tries.length - 1;
+            if (idx > this.maxTries) {
+              continue;
+            }
             stats.winHistogram.other[idx] ??= 0;
             stats.winHistogram.other[idx]++;
+            stats.winHistogram.max = Math.max(stats.winHistogram.other[idx], stats.winHistogram.max);
           }
         } else {
           stats.currentStreak = 0;
           stats.winHistogram.fail++;
+          stats.winHistogram.max = Math.max(stats.winHistogram.fail, stats.winHistogram.max);
         }
       }
     }
     stats.winRate = stats.won / stats.played;
+    if (isNaN(stats.winRate)) stats.winRate = 0;
     return stats;
   }
 

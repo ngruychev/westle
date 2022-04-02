@@ -84,6 +84,6 @@ async function main() {
         setTimeout(window.location.reload(), this._tickSpeed * 2);
       }
     },
-  }).mount("#main");
+  }).mount("#appRoot");
 }
 window.westleMainFn = main;

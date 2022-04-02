@@ -87,14 +87,99 @@ In their eyes?
     </ul>
   </template>
 
-  <template id="main-component">
+  <template id="app-body-component">
     <div v-scope="{ $template: '#tries-component' }" v-if="!isGameDone" class="tries"></div>
     <div v-if="isGameDone" v-scope="{ $template: '#game-done-component' }" class="game-done"></div>
     <div v-scope="PlayerComponent({ yt: _yt, gameLogic: _gameLogic })" v-if="!isGameDone" class="player"></div>
     <div v-scope="ControlsComponent({ gameLogic: _gameLogic })" v-if="!isGameDone" class="controls"></div>
   </template>
 
-  <main id="main" v-scope="{ $template: '#main-component' }" @vue:mounted="mounted" class="app-main"></main>
+  
+  <template id="app-root-component">
+    <header class="header">
+      <details class="details-modal">
+        <summary class="details-modal__summary">
+          ❓
+        </summary>
+        <div class="details-modal__outer">
+          <div class="details-modal__inner">
+            <header class="details-modal__header">
+              <h1 class="details-modal__title">How to play</h1>
+              <button
+                class="button details-modal__close-btn"
+                onclick="this.parentElement.parentElement.parentElement.parentElement.open = false">
+                ×
+              </button>
+            </header>
+            <main class="details-modal__main">
+              <ol class="help-modal__ol">
+                <li class="help-modal__li">Listen to the intro, then find the correct Ye song in the list.</li>
+                <li class="help-modal__li">Skipped or incorrect attempts unlock more of the intro</li>
+                <li class="help-modal__li">Answer in as few tries as possible and share your score!</li>
+              </ol>
+            </main>
+          </div>
+        </div>
+      </details>
+      <h1 class="header__title">Westle</h1>
+      <details class="details-modal">
+        <summary class="details-modal__summary">
+          📊
+        </summary>
+        <div class="details-modal__outer">
+          <div class="details-modal__inner">
+            <header class="details-modal__header">
+              <h1 class="details-modal__title">Stats</h1>
+              <button
+                class="button details-modal__close-btn"
+                onclick="this.parentElement.parentElement.parentElement.parentElement.open = false">
+                ×
+              </button>
+            </header>
+            <main class="details-modal__main" v-scope="{ stats: _gameLogic.stats }">
+              <h4>Statistics</h4>
+              <dl class="stats-modal__dl">
+                <span class="stats-modal__dl-pair">
+                  <dt class="stats-modal__dt">Played</dt>
+                  <dd class="stats-modal__dd">{{ stats.played }}</dd>
+                </span>
+                <span class="stats-modal__dl-pair">
+                  <dt class="stats-modal__dt">Won</dt>
+                  <dd class="stats-modal__dd">{{ stats.won }}</dd>
+                </span>
+                <span class="stats-modal__dl-pair">
+                  <dt class="stats-modal__dt">Win %</dt>
+                  <dd class="stats-modal__dd">{{ Math.floor(stats.winRate * 100 * 10) / 10 }}</dd>
+                </span>
+                <span class="stats-modal__dl-pair">
+                  <dt class="stats-modal__dt">Current<br>Streak</dt>
+                  <dd class="stats-modal__dd">{{ stats.currentStreak }}</dd>
+                </span>
+                <span class="stats-modal__dl-pair">
+                  <dt class="stats-modal__dt">Max<br>Streak</dt>
+                  <dd class="stats-modal__dd">{{ stats.maxStreak }}</dd>
+                </span>
+              </dl>
+              <h4>Guess Distribution</h4>
+              <div class="stats-graph">
+                <div class="stats-graph__row" v-for="(val, idx) in stats.winHistogram.other" :key="idx">
+                  <span class="stats-graph__row-idx">{{ idx + 1 }}</span>
+                  <span class="stats-graph__row-bar" :style="`width: ${val / stats.winHistogram.max * 90 + 10}%;`">
+                    <span class="stats-graph__row-num">{{ val }}</span>
+                  </span>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </details>
+      <a class="header__stats-a" for="stats-modal" href="#stats">
+      </a>
+    </header>
+    <main v-scope="{ $template: '#app-body-component' }" class="app-body"></main>
+  </template>
+
+  <div v-scope="{ $template: '#app-root-component' }" id="appRoot" @vue:mounted="mounted"></div>
 
   <!-- boilerplate stuff -->
   <div id="youtube-audio">
