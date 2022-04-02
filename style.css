@@ -215,6 +215,12 @@ html, body {
     text-align: center;
     padding: 0.5em;
     width: 4em;
+    flex-grow: 1;
+}
+
+.stats-modal__dl {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .stats-modal__dt {
