@@ -90,7 +90,7 @@ async function main() {
     },
     set firstTimePlaying(value) {
       localStorage.setItem("firstTimePlaying", value);
-    }
+    },
   }).mount("#appRoot");
 }
 window.westleMainFn = main;

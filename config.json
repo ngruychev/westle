@@ -7,5 +7,5 @@
   "timezone": "America/Los_Angeles",
   "randomSong": false,
   "maxTries": 6,
-  "persistToLocalStorage": true
+  "seed": "kanye west"
 }

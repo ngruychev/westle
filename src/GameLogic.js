@@ -98,12 +98,18 @@ export class GameLogic {
             }
             stats.winHistogram.other[idx] ??= 0;
             stats.winHistogram.other[idx]++;
-            stats.winHistogram.max = Math.max(stats.winHistogram.other[idx], stats.winHistogram.max);
+            stats.winHistogram.max = Math.max(
+              stats.winHistogram.other[idx],
+              stats.winHistogram.max,
+            );
           }
         } else {
           stats.currentStreak = 0;
           stats.winHistogram.fail++;
-          stats.winHistogram.max = Math.max(stats.winHistogram.fail, stats.winHistogram.max);
+          stats.winHistogram.max = Math.max(
+            stats.winHistogram.fail,
+            stats.winHistogram.max,
+          );
         }
       }
     }
