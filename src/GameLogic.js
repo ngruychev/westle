@@ -1,4 +1,5 @@
 import { fuzzy } from "./utils/fuzzy.js";
+import config from "../config.json" assert { type: "json" };
 
 const TryType = {};
 TryType[TryType.SKIP = 0] = "SKIP";
@@ -197,7 +198,7 @@ export class GameLogic {
 
 ${gameEmoji}${emojiBar.join("")}
 
-https://westle.app (doesn't actually exist)`;
+${config.siteUrl}`;
     return emojiString;
   }
 }

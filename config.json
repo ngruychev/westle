@@ -7,5 +7,6 @@
   "timezone": "America/Los_Angeles",
   "randomSong": false,
   "maxTries": 6,
-  "seed": "kanye west"
+  "seed": "kanye west",
+  "siteUrl": "https://westle.netlify.app"
 }

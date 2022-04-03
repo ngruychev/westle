@@ -55,7 +55,8 @@ This is what the default `config.json` file looks like:
   "timezone": "America/Los_Angeles",
   "randomSong": false,
   "maxTries": 6,
-  "seed": "kanye west"
+  "seed": "kanye west",
+  "siteUrl": "https://westle.netlify.app"
 }
 ```
 
@@ -66,3 +67,4 @@ This is what the default `config.json` file looks like:
 - `maxTries` is the maximum number of tries per game day.
 - `seed` is a seed with which the songs are shuffled (to prevent the need for
   manual shuffling of songs.json).
+- `siteUrl` is the URL of the site. Used for the shareable emoji text thing.
