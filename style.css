@@ -19,7 +19,7 @@ html, body {
 }
 
 .button {
-  border-radius: 4px;
+  border-radius: 2px;
   outline: none;
   border: none;
   background-color: var(--westle-color-primary);
@@ -27,6 +27,15 @@ html, body {
   margin: 0.2em;
   text-transform: uppercase;
   font-weight: bold;
+}
+
+.button:active {
+  background-color: var(--westle-color-secondary);
+}
+
+.button:hover {
+  border-radius: 5px;
+  filter: brightness(1.1);
 }
 
 .try__value--skip {
@@ -48,10 +57,6 @@ html, body {
 
 .controls__skip-btn {
   background-color: var(--westle-color-secondary-gray);
-}
-
-.controls__guess-btn {
-  background-color: var(--westle-color-secondary);
 }
 
 #appRoot {
@@ -197,9 +202,15 @@ html, body {
   top: 1rem;
   cursor: pointer;
   background: none;
-  color: var(--westle-color-primary-gray);
+  color: var(--westle-color-secondary-gray);
   padding: 5px;
   font-size: 1.2em;
+  border: none;
+  font-weight: bold;
+}
+
+.modal__close-btn:hover {
+  color: var(--westle-color-primary-gray);
 }
 
 .modal__main {
@@ -260,4 +271,10 @@ html, body {
 
 .help-modal__li {
     margin: 1.5em;
+}
+
+.help-modal__play-btn {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }

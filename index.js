@@ -84,6 +84,13 @@ async function main() {
         setTimeout(window.location.reload(), this._tickSpeed * 2);
       }
     },
+    //
+    get firstTimePlaying() {
+      return JSON.parse(localStorage.getItem("firstTimePlaying") || "true");
+    },
+    set firstTimePlaying(value) {
+      localStorage.setItem("firstTimePlaying", value);
+    }
   }).mount("#appRoot");
 }
 window.westleMainFn = main;

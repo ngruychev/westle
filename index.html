@@ -97,13 +97,13 @@ In their eyes?
   
   <template id="app-root-component">
     <header class="header">
-      <div class="modal" v-scope="{ modalOpen: false }">
+      <div class="modal" v-scope="{ modalOpen: firstTimePlaying }">
         <span class="modal__activator" @click="modalOpen = true">❓</span>
-        <div class="modal__outer" v-if="modalOpen" @click="modalOpen = false">
+        <div class="modal__outer" v-if="modalOpen" @click="modalOpen = false, firstTimePlaying = false">
           <div class="modal__inner" @click.stop="">
             <header class="modal__header">
               <h1 class="modal__title">How to play</h1>
-              <button class="button modal__close-btn" @click="modalOpen = false">×</button>
+              <button class="modal__close-btn" @click="modalOpen = false, firstTimePlaying = false">×</button>
             </header>
             <main class="modal__main">
               <ol class="help-modal__ol">
@@ -111,6 +111,7 @@ In their eyes?
                 <li class="help-modal__li">Skipped or incorrect attempts unlock more of the intro</li>
                 <li class="help-modal__li">Answer in as few tries as possible and share your score!</li>
               </ol>
+              <button class="button help-modal__play-btn" @click="modalOpen = false, firstTimePlaying = false">Play</button>
             </main>
           </div>
         </div>
